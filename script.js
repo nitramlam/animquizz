@@ -2,20 +2,29 @@ let countries = [];
 let currentQuestion = 0;
 let score = 0;
 const maxQuestions = 10;
+let timer;
+let timeLeft = 5;
+
+document.getElementById('quiz-container').style.display = 'none';
+
+document.getElementById('start-button').addEventListener('click', function() {
+    document.getElementById('start-button').style.display = 'none';
+    document.getElementById('quiz-container').style.display = 'block';
+    startQuiz();
+});
 
 fetch('https://restcountries.com/v3.1/all?fields=name,capital&lang=fr')
     .then(response => response.json())
     .then(data => {
         countries = data;
         shuffleArray(countries);
-        startQuiz();
     })
     .catch(error => console.error('Erreur lors du chargement des données:', error));
 
 function startQuiz() {
-    currentQuestion = 0; // Réinitialiser la question courante
-    score = 0; // Réinitialiser le score
-    document.getElementById('score').textContent = `Score: ${score}`; // Mettre à jour l'affichage du score
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById('score').textContent = `Score: ${score}/10`;
     showQuestion();
 }
 
@@ -25,17 +34,27 @@ function showQuestion() {
         return;
     }
 
+    timeLeft = 5;
+    document.getElementById('timer').textContent = `Temps restant: ${timeLeft}`;
+
+    clearInterval(timer);
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById('timer').textContent = `Temps restant: ${timeLeft}`;
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            checkAnswer(null, countries[currentQuestion].capital ? countries[currentQuestion].capital[0] : "N/A");
+        }
+    }, 1000);
+
     const country = countries[currentQuestion];
     const capital = country.capital ? country.capital[0] : "N/A";
-    
-    // Filtrer les pays avec des capitales valides
+
     const validCountries = countries.filter(c => c.capital && c.capital[0]);
     const choices = [capital, ...getRandomCapitals(3, validCountries)];
 
-    // Mélanger les options de réponse
     shuffleArray(choices);
 
-    // Afficher la question
     document.getElementById('question').textContent = `Quelle est la capitale de ${country.name.common} ?`;
 
     const choicesContainer = document.getElementById('choices');
@@ -50,40 +69,50 @@ function showQuestion() {
 }
 
 function getRandomCapitals(count, validCountries) {
-    // Extraire les capitales valides
     const capitals = validCountries.map(country => country.capital[0]);
-
-    // Mélanger les capitales et prendre un nombre aléatoire
     capitals.sort(() => 0.5 - Math.random());
     return capitals.slice(0, count);
 }
 
 function checkAnswer(selected, correct) {
+    clearInterval(timer);
+
+    const correctSound = document.getElementById('correct-sound');
+    const wrongSound = document.getElementById('wrong-sound');
+
     const buttons = document.querySelectorAll('button');
-    
-    // Appliquer les couleurs sur les boutons en fonction de la réponse
+
     buttons.forEach(button => {
         if (button.textContent === correct) {
-            button.style.backgroundColor = 'green'; // Bonne réponse en vert
+            button.style.backgroundColor = 'green';
+            if (selected === correct) {
+                correctSound.currentTime = 0;
+                correctSound.play();
+            }
         } else if (button.textContent === selected) {
-            button.style.backgroundColor = 'red'; // Mauvaise réponse en rouge
+            button.style.backgroundColor = 'red';
+            if (selected !== correct) {
+                wrongSound.currentTime = 0;
+                wrongSound.play();
+            }
         }
-        button.disabled = true; // Désactiver les boutons après une réponse
+        button.disabled = true;
     });
 
     if (selected === correct) {
-        score++; // Incrémenter le score si la réponse est correcte
+        score++;
     }
 
-    document.getElementById('score').textContent = `Score: ${score}`; // Mettre à jour l'affichage du score
+    document.getElementById('score').textContent = `Score: ${score}/10`;
 
     setTimeout(() => {
         currentQuestion++;
-        showQuestion(); // Passer à la question suivante après un court délai
-    }, 1000); // Pause d'une seconde avant de passer à la question suivante
+        showQuestion();
+    }, 1000);
 }
 
 function endQuiz() {
+    clearInterval(timer);
     document.getElementById('question').textContent = `Quiz terminé ! Votre score est ${score} sur ${maxQuestions}.`;
     document.getElementById('choices').innerHTML = '';
     const restartButton = document.createElement('button');
@@ -93,10 +122,10 @@ function endQuiz() {
 }
 
 function restartQuiz() {
-    currentQuestion = 0; // Réinitialiser la question courante
-    score = 0; // Réinitialiser le score
-    document.getElementById('score').textContent = `Score: ${score}`; // Mettre à jour l'affichage du score
-    shuffleArray(countries); // Optionnel: Réinitialiser l'ordre des pays
+    currentQuestion = 0;
+    score = 0;
+    document.getElementById('score').textContent = `Score: ${score}/10`;
+    shuffleArray(countries);
     startQuiz();
 }
 
@@ -106,28 +135,27 @@ function shuffleArray(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
 }
+
 particlesJS('particles-js', {
     "particles": {
       "number": {
-        "value": 100, /* Nombre de particules */
+        "value": 100,
       },
       "color": {
-        "value": "#f45324", /* Couleur des particules */
+        "value": "#f45324",
       },
       "shape": {
-        "type": "circle", /* Forme des particules */
+        "type": "circle",
       },
       "opacity": {
-        "value": 0.5, /* Transparence des particules */
+        "value": 0.3,
       },
       "size": {
-        "value": 3, /* Taille des particules */
+        "value": 6,
       },
       "move": {
-        "direction": "top", /* Direction du mouvement */
-        "speed": 2 /* Vitesse de déplacement */
+        "direction": "top",
+        "speed": 2
       }
     }
-  });
-  
-// Configuration pour Particles.js
+});

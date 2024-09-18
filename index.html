@@ -4,19 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz des Capitales</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Lien vers ta feuille de styles -->
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="particles-js"></div> <!-- Ajout du fond animé ici -->
+    <audio id="correct-sound" src="correct.mp3" preload="auto"></audio>
+    <audio id="wrong-sound" src="wrong.mp3" preload="auto"></audio>
+
+    <div id="particles-js"></div>
+
+    <!-- Bouton Démarrer le quiz -->
+    <button id="start-button">Démarrer le Quiz</button>
 
     <div id="quiz-container">
         <h1>Quiz des Capitales</h1>
         <p id="question"></p>
         <div id="choices"></div>
         <p id="score">Score: 0</p>
+        <p id="timer">Temps restant: 10</p>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> <!-- Inclusion de Particles.js -->
-    <script src="script.js"></script> <!-- Inclusion de ton script -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script> 
+    <script src="script.js"></script>
+
 </body>
 </html>
