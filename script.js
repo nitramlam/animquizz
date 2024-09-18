@@ -113,7 +113,7 @@ function checkAnswer(selected, correct) {
 
 function endQuiz() {
     clearInterval(timer);
-    document.getElementById('question').textContent = `Quiz terminé ! Votre score est ${score} sur ${maxQuestions}.`;
+    document.getElementById('question').textContent = `Quiz terminé ! Votre score est de  ${score} sur ${maxQuestions}.`;
     document.getElementById('choices').innerHTML = '';
     const restartButton = document.createElement('button');
     restartButton.textContent = 'Recommencer';
@@ -139,23 +139,23 @@ function shuffleArray(array) {
 particlesJS('particles-js', {
     "particles": {
       "number": {
-        "value": 100,
+        "value": 9,
       },
       "color": {
-        "value": "#f45324",
+        "value": ["#f1b9bd", "#91ccec", "#fde49f", "#dfe0e2", ],
       },
       "shape": {
         "type": "circle",
       },
       "opacity": {
-        "value": 0.3,
+        "value": 0.5,
       },
       "size": {
-        "value": 6,
+        "value": 150,
       },
       "move": {
-        "direction": "top",
-        "speed": 2
+        "direction": "none",
+        "speed": 10
       }
     }
 });
