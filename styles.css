@@ -11,11 +11,13 @@ body {
 }
 
 #start-container {
+    width: 50%;
     background-color: #363636;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
-    width: 300px;
+    width: 600px;
+    
     text-align: center;
     color: white;
     font-family: "Abril Fatface", serif;
@@ -135,18 +137,24 @@ button:hover {
 
 @media only screen and (max-width: 768px) {
     #start-button {
-        width: auto;
-    }
-
-    #quiz-container, #start-container {
-        width: 90%;
-    }
-
-    #scoreboard {
-        width: 90%;
+        width: 70%; /* Le bouton prend 70% de la largeur sur les petits écrans */
+        margin: 0 auto; /* Centrer le bouton */
+        margin-top: 15px; /* Ajout d'une marge pour séparer du champ de texte */
     }
 
     #player-name {
-        width: 70%;
+        width: 70%; /* Le champ de saisie prend aussi 70% de la largeur */
+        margin: 0 auto;
+        margin-bottom: 15px; /* Espace entre le champ de saisie et le bouton */
+    }
+
+    #quiz-container, #start-container {
+        width: 70%; /* Le quiz et le conteneur de démarrage prennent 70% de la largeur */
+        margin: 0 auto; /* Centrer les conteneurs */
+    }
+
+    #scoreboard {
+        width: 70%; /* Le tableau des scores prend aussi 70% de la largeur */
+        margin: 0 auto; /* Centrer le tableau des scores */
     }
 }
