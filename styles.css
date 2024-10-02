@@ -35,8 +35,8 @@ body {
 }
 
 #start-button {
-    width: 100%;
-    padding: 10px 20px;
+    width: 25%;
+    margin: 0 auto;
     font-size: 16px;
     background-color: #FDE49F;
     color: #363636;
